@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java Maven App
+name: Java Maven App 1
 
 on:
   push:
