@@ -56,7 +56,7 @@ jobs:
         repository: Git-oga1/manifest
         ref: 'main'
         token: ${{ secrets.G_TOKEN }}
-        path: k8-web-app
+       # path: k8-web-app
     - name: change image tag
       run: / sed -i "s#${{ secrets.DOCKERHUB_MAVEN_REPONAME}}:*#${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}#g" mavenwebappdeployment.yaml && \ git add -A && \ git commit -am "Deployment image tag ${{github.sha}}"
     - run: git push origin main
