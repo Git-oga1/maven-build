@@ -70,7 +70,7 @@ jobs:
         token: ${{ secrets.G_TOKEN }}
         persist-credentials: true
     - name: change image tag
-      run: ls -R 
+      run: cd ./k8-web-app &&\ sed -i "s#DockerLAnthony/maven-web-application:latest#DockerLAnthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
     - run: git config --global user.email "tonix2002@gmail.com"
     - run: git config --global user.name "Git-LAnthony" 
     - run: git add -A
