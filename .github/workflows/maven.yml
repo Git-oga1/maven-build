@@ -71,9 +71,13 @@ jobs:
         persist-credentials: true
     - name: change image tag
       shell: bash
-      run: sed -i "s#${{ secrets.DOCKERHUB_MAVEN_REPONAME}}:*#${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}#g" mavenwebappdeployment.yaml && \    
-        git add -A && \ 
-    - run: git commit -am "Deployment image tag ${{github.sha}}"
+      run: /
+        git config --global user.email "tonix2002@gmail.com"
+        git config --global user.name "Git-LAnthony"
+        echo ${{ github.sha}}      
+        sed -i "s#${{ secrets.DOCKERHUB_MAVEN_REPONAME}}:*#${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}#g" mavenwebappdeployment.yaml
+        git add -A 
+        git commit -am "Deployment image tag ${{github.sha}}"
     - run: git push
 
 
