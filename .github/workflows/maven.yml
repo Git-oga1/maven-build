@@ -69,6 +69,7 @@ jobs:
         ref: 'main'
         token: ${{ secrets.G_TOKEN }}
         persist-credentials: true
+    - name: change deplotment tag
       run: |
         cd ./k8-web-app 
         sed -i "s#DockerLAnthony/maven-web-application:latest#DockerLAnthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
