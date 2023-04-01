@@ -70,11 +70,11 @@ jobs:
         token: ${{ secrets.G_TOKEN }}
         persist-credentials: true
     - name: change image tag
-      run: sed -i "s#${{ secrets.DOCKERHUB_MAVEN_REPONAME}}:*#${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}#g" mavenwebappdeployment.yaml &&\
+      run: sed -i "s#DockerLAnthony/maven-web-application:latest#DockerLAnthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml 
     - run: git config --global user.email "tonix2002@gmail.com"
-    - run: git config --global user.name "Git-LAnthony" &&\
+    - run: git config --global user.name "Git-LAnthony" 
     - run: git add -A
-    - run: git commit -am "Deployment image tag ${{github.sha}}" &&\
+    - run: git commit -am "Deployment image tag ${{github.sha}}" 
     - run: git push
 
 # echo ${{ github.sha}} &&\      
