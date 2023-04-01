@@ -71,7 +71,7 @@ jobs:
         persist-credentials: true
     - name: change image tag
       shell: bash
-      run: /
+      run: 
         git config --global user.email "tonix2002@gmail.com"
         git config --global user.name "Git-LAnthony"
         echo ${{ github.sha}}      
