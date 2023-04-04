@@ -40,15 +40,15 @@ out.println("Server Host Name :: "+inetAddress.getHostName());
 		Tel number,+01-010101010
 		myemail@gmail.com
 		<br>
-		<a href="mailto:devopstrainingblr@gmail.com">Anthony Lamai</a>
+		<a href="mailto:myemail@gmail.com">Anthony Lamai</a>
 	</span>
 </div>
 <hr>
 	<p> Service : <a href="services/employee/getEmployeeDetails">Get Employee Details </p>
 <hr>
 <hr>
-<p align=center>Mithun Technologies - Consultant, Training, Development Center.</p>
-<p align=center><small>Copyrights 2022 by <a href="http://anthonylamai.com/">Mithun Technologies,Bengaluru</a> </small></p>
+<p align=center>Anthony lamai.</p>
+<p align=center><small>Copyrights 2022 by <a href="http://anthonylamai.com/">company name</a> </small></p>
 
 </body>
 </html>
