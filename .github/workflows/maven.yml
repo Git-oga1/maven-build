@@ -72,7 +72,7 @@ jobs:
     - name: change deplotment tag
       run: |
         cd ./k8-web-app 
-        sed -i "s#DockerLAnthony.*#dockerlanthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
+        sed -i "s#dockerlanthony/maven-web-application:latest*#dockerlanthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
         git config --global user.email "tonix2002@gmail.com"
         git config --global user.name "Git-LAnthony" 
         git add -A
