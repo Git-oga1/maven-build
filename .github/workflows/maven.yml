@@ -85,6 +85,6 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest, ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{steps.versioning.outputs.version}}
+        tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest,${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{steps.versioning.outputs.version}}
 
 
