@@ -16,9 +16,21 @@ on:
 
 jobs:
 
-
-  packagebuild:
+  Code-review:
     runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Lint Code Base
+      uses: github/super-linter@v4
+    env:
+      VALIDATE_ALL_CODEBASE: false
+      DEFAULT_BRANCH: master
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  Packagebuild:
+    runs-on: ubuntu-latest
+    needs: Code-review
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -35,9 +47,20 @@ jobs:
         name: maven-web-application
         path: staging
 
-  Dockerbuild:
+    - name: SemVersioning
+      id: versioning
+      uses: paulhatch/semantic-version@v5.0.2
+      with:
+        branch: main
+        tag_prefix: "v"
+        major_pattern: "BREAKING CHANGE:"
+        minor_pattern: "feat:"
+        version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+
+
+  Docker-build-Push:
     runs-on: ubuntu-latest
-    needs: packagebuild
+    needs: Packagebuild
     steps:
     - name: checkout repo
       uses: actions/checkout@v3
@@ -57,32 +80,6 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest, ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}
+        tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest, ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{steps.versioning.outputs.version}}
 
-  update-manifest-repo:
-    runs-on: ubuntu-latest
-    needs: Dockerbuild
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        repository: Git-oga1/manifest
-        ref: 'main'
-        token: ${{ secrets.G_TOKEN }}
-        persist-credentials: true
-    - name: change deplotment tag
-      run: |
-        cd ./k8-web-app 
-        sed -i "s#dockerlanthony/maven-web-application:eb9b415b5b33cb1d96b403f3984e0598ae4f901b#dockerlanthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
-        git config --global user.email "tonix2002@gmail.com"
-        git config --global user.name "Git-LAnthony" 
-        git add -A
-        git commit -am "Deployment image tag ${{github.sha}}" 
-        git push
-
-# echo ${{ github.sha}} &&\      
-# sed -i "s#${{ secrets.DOCKERHUB_MAVEN_REPONAME}}:*#${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{github.sha}}#g" mavenwebappdeployment.yaml &&\
-# sed -i "s#DockerLAnthony/maven-web-application:latest#DockerLAnthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
-# sed -i "s#DockerLAnthony/maven-web-application:latest#DockerLAnthony/maven-web-application:${{github.sha}}#g" mavenwebappdeployment.yaml
-
-
-
+  
