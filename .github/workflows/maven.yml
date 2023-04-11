@@ -12,7 +12,7 @@ on:
   push:
     branches: ["main"]
   # pull_request:
-  #   branches: ["main"]
+#   branches: ["main"]
 
 jobs:
 
@@ -47,7 +47,7 @@ jobs:
         name: maven-web-application
         path: staging
 
-  Semantic-versioning:
+  Semantic-tag-docker-push-release:
     runs-on: ubuntu-latest
     needs: Packagebuild
     steps:
@@ -63,14 +63,6 @@ jobs:
         major_pattern: "BREAKING CHANGE:"
         minor_pattern: "feat:"
         version_format: "${major}.${minor}.${patch}-prerelease${increment}"
-
-    - name: checkout repo
-
-      # Docker-build-Push:
-      #   runs-on: ubuntu-latest
-      #   needs: Semantic-versioning
-      #   steps:
-      uses: actions/checkout@v3
     - name: Download artifact
       uses: actions/download-artifact@v3
       with:
@@ -87,4 +79,12 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest,${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{steps.versioning.outputs.version}}
 
-
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{steps.versioning.outputs.version}}
+        release_name: ${{steps.versioning.outputs.version}}
+        prerelease: true
