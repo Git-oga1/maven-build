@@ -47,6 +47,14 @@ jobs:
         name: maven-web-application
         path: staging
 
+  Semantic-versioning:
+    runs-on: ubuntu-latest
+    needs: Packagebuild
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v3
+      with:
+        fetch depth: 0
     - name: SemVersioning
       id: versioning
       uses: paulhatch/semantic-version@v5.0.2
@@ -68,8 +76,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: maven-web-application
-    - name: View content of artifact
-      run: ls -R
     - name: Login Docker Hub
       uses: docker/login-action@v2
       with:
@@ -82,4 +88,4 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:latest, ${{ secrets.DOCKERHUB_MAVEN_REPONAME }}:${{steps.versioning.outputs.version}}
 
-  
+
