@@ -9,8 +9,8 @@
 name: Java Maven App
 
 on:
-  push:
-    branches: ["main"]
+  # push:
+  #   branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -54,12 +54,11 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v3
       with:
-        fetch depth: 0
-    - name: SemVersioning
+        branch: main
+    - name: versioning
       id: versioning
       uses: paulhatch/semantic-version@v5.0.2
       with:
-        branch: main
         tag_prefix: "v"
         major_pattern: "BREAKING CHANGE:"
         minor_pattern: "feat:"
@@ -68,7 +67,7 @@ jobs:
 
   Docker-build-Push:
     runs-on: ubuntu-latest
-    needs: Packagebuild
+    needs: Semantic-versioning
     steps:
     - name: checkout repo
       uses: actions/checkout@v3
